@@ -1,0 +1,22 @@
+svg {
+    border: 1px dashed gray;
+}
+#results, #container {
+    display: inline-block;
+    margin: 15px;
+}
+p {
+    margin: 15px;
+}
+td {
+  border: 1px solid #bbb;
+}
+.header {
+  font-weight: bold;
+}
+
+#code textarea {
+  height: 500px;
+  width: 500px;
+  font-family: monospace;
+}
