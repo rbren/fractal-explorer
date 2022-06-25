@@ -1,3 +1,6 @@
+#col1, #col2 {
+  display: inline-block;
+}
 svg {
     border: 1px dashed gray;
 }
@@ -15,8 +18,8 @@ td {
   font-weight: bold;
 }
 
-#code textarea {
-  height: 500px;
+#editor {
+  height: 700px;
   width: 500px;
-  font-family: monospace;
+  border: 1px solid #bbb;
 }

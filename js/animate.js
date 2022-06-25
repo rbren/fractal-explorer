@@ -57,20 +57,28 @@ function updateResults(count, time, steps) {
 }
 
 var svg = null;
-const maxX = 500, maxY = 400;
+const maxX = 700, maxY = 700;
 
 function restart() {
-  $("#container").empty();
-  svg = d3.select("#container").append("svg")
+  $("button").html("...");
+  $("#animation").empty();
+  svg = d3.select("#animation").append("svg")
     .attr("width", maxX)
     .attr("height", maxY);
-  code = $("#code textarea").val();
-  eval(code);
+  let code = window.editor.getValue();
+  try {
+    eval(code);
+    $("#error").html("");
+  } catch (e) {
+    console.log(e);
+    $("#error").html(`<pre>${e.toString() + e.stack}</pre>`);
+  }
+  $("button").html("Run!");
 }
 
-$(function () {
-  $("#code textarea").val(DEFAULT_CODE);
-  restart();
+
+onEditorLoaded(function() {
+  window.editor.setValue(window.localStorage.getItem('code') || DEFAULT_CODE);
 });
 
 
