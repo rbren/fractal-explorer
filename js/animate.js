@@ -56,15 +56,21 @@ function updateResults(count, time, steps) {
   console.log(count, time, steps);
 }
 
-var svg = null;
-const maxX = 700, maxY = 700;
+const maxX = 350, maxY = 350;
+const canvas = $("#canvas")[0]
+const canvasCtx = canvas.getContext('2d');
+canvas.width = maxX;
+canvas.height = maxY;
+const idata = canvasCtx.createImageData(maxX, maxY);
+$("#canvas").click((evt) => {
+  console.log('click', evt);
+  if (window.click) {
+    window.click(evt.offsetX, evt.offsetY);
+  }
+});
 
 function restart() {
-  $("button").html("...");
-  $("#animation").empty();
-  svg = d3.select("#animation").append("svg")
-    .attr("width", maxX)
-    .attr("height", maxY);
+  window.stopped = false;
   let code = window.editor.getValue();
   try {
     eval(code);
@@ -72,10 +78,28 @@ function restart() {
   } catch (e) {
     console.log(e);
     $("#error").html(`<pre>${e.toString() + e.stack}</pre>`);
+    return;
   }
-  $("button").html("Run!");
+  const pixels = new Uint8ClampedArray(maxX * maxY * 4);
+  if (window.step) {
+    let stepIdx = 0;
+    let stepCallback = function() {
+      window.step(pixels, stepIdx);
+      $("#step").html(stepIdx);
+      stepIdx++;
+      idata.data.set(pixels);
+      canvasCtx.putImageData(idata, 0, 0);
+      if (!window.stopped) {
+        requestAnimationFrame(stepCallback);
+      }
+    }
+    requestAnimationFrame(stepCallback);
+  }
 }
 
+function stop() {
+  window.stopped = true;
+}
 
 onEditorLoaded(function() {
   window.editor.setValue(window.localStorage.getItem('code') || DEFAULT_CODE);

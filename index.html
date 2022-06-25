@@ -7,11 +7,15 @@
 <body>
 <div id="col1">
   <div id="editor"></div>
-  <button onclick="restart()">Run!</button>
+  <button id="startButton" onclick="restart()">Start</button>
+  <button id="stopButton" onclick="stop()">Stop</button>
+  <span id="step"></span>
   <div id="error"></div>
 </div>
 <div id="col2">
-  <div id="animation"></div>
+  <div id="animation">
+    <canvas id="canvas"></canvas>
+  </div>
 </div>
 <script src="node_modules/mathjs/lib/browser/math.js"></script>
 <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
