@@ -1,3 +1,7 @@
+const DEFAULT_CODE = `
+console.log("hello world");
+`
+
 const loadCallbacks = [];
 var onEditorLoaded = function(fn) {
   if (window.editor && window.editor.setValue) {
@@ -9,7 +13,7 @@ var onEditorLoaded = function(fn) {
 
 require.config({ paths: { vs: 'node_modules/monaco-editor/min/vs' } });
 require(['vs/editor/editor.main'], function () {
-    window.editor = monaco.editor.create(document.getElementById('editor'), {
+    let editor = window.editor = monaco.editor.create(document.getElementById('editor'), {
         value: ['function x() {', '\tconsole.log("Hello world!");', '}'].join('\n'),
         language: 'javascript',
         codeLens: false,
@@ -19,7 +23,8 @@ require(['vs/editor/editor.main'], function () {
     loadCallbacks.forEach(fn => fn());
     editor.onDidChangeModelContent(function (e) {
       console.log('change');
-      localStorage.setItem('code', editor.getValue());
+      window.localStorage.setItem('code', editor.getValue());
     });
+    editor.setValue(window.localStorage.getItem('code') || DEFAULT_CODE);
 });
 

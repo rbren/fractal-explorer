@@ -7,8 +7,9 @@
 <body>
 <div id="col1">
   <div id="editor"></div>
-  <button id="startButton" onclick="restart()">Start</button>
-  <button id="stopButton" onclick="stop()">Stop</button>
+  <button id="startButton" onclick="restart()">Restart</button>
+  <button id="pauseButton" onclick="pause()">Pause</button>
+  <button id="unpauseButton" onclick="unpause()">Unpause</button>
   <span id="step"></span>
   <div id="error"></div>
 </div>
@@ -22,6 +23,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="js/editor.js"></script>
-<script src="js/animate.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/animation.js"></script>
 </body>
 </html>
