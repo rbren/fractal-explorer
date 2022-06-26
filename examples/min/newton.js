@@ -1,6 +1,6 @@
 const MAX_COLOR_STEP = 100;
 
-window.getHSLForPoint = function(point) {
+const getHSLForPoint = function(point) {
 	if (point.stopStep || point.stopStep === 0) {
 		let h = 60;
 		if (point.root === 0) h = 0;
@@ -22,9 +22,10 @@ window.step = function(points, stepNumber) {
 		if (root != -1) {
 			point.stopStep = stepNumber;
 			point.root = root;
-			return
-		}
-		point.z = newtonNext(point.z);
+		} else {
+          point.z = newtonNext(point.z);
+        }
+        point.hsl = getHSLForPoint(point);
 	});
 	return points;
 }

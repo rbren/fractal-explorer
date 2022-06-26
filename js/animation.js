@@ -1,27 +1,36 @@
-let windowSize = 3
-let reCenter = 0;
-let imCenter = 0;
+const defaultWindowOptions = {
+  size: 3,
+  reCenter: 0,
+  imCenter: 0,
+}
+
 let win = null;
 
-function computeWindow() {
+function computeWindow(opts) {
 	return win = {
 		im: {
-			start: imCenter - windowSize / 2,
-			end: imCenter + windowSize / 2,
-			step: windowSize / maxY,
+			start: opts.imCenter - opts.size / 2,
+			end: opts.imCenter + opts.size / 2,
+			step: opts.size / maxY,
 		},
 		re: {
-			start: reCenter - windowSize / 2,
-			end: reCenter + windowSize / 2,
-			step: windowSize / maxX,
+			start: opts.reCenter - opts.size / 2,
+			end: opts.reCenter + opts.size / 2,
+			step: opts.size / maxX,
 		},
+        size: opts.size,
 	};
 }
 
 const zoomToPoint = function(x, y) {
-	reCenter = reValue(x, true);
-	imCenter = imValue(y);
-	windowSize /= 2;
+    let opts = {
+      reCenter: reValue(x),
+      imCenter: imValue(y),
+      size: win.size / 2,
+    }
+    console.log('win', opts);
+    computeWindow(opts);
+    console.log('win', win);
 	window.points = buildStartPoints();
 }
 
@@ -52,7 +61,6 @@ const imValue = function(y) {
 }
 
 const buildStartPoints = function() {
-	computeWindow();
 	const points = [];
 	for (let y = 0; y < maxY; y++) {
 		let im = imValue(y);
@@ -72,6 +80,7 @@ $("#canvas").click((evt) => {
 });
 
 window.startDrawLoop = function() {
+  computeWindow(defaultWindowOptions);
   window.points = buildStartPoints()
   const pixels = new Uint8ClampedArray(maxX * maxY * 4);
   window.stepIdx = 0;
@@ -84,8 +93,7 @@ window.startDrawLoop = function() {
     $("#step").html(stepIdx);
     window.step(window.points, stepIdx);
     window.points.forEach((point, idx) => {
-      const hsl = window.getHSLForPoint(point);
-      const rgb = d3.rgb(hsl);
+      const rgb = point.rgb || d3.rgb(point.hsl);
       pixels[idx * 4] = rgb.r;
       pixels[idx * 4 + 1] = rgb.g;
       pixels[idx * 4 + 2] = rgb.b;
