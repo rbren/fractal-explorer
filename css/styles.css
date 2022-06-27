@@ -23,3 +23,7 @@ td {
   width: 500px;
   border: 1px solid #bbb;
 }
+
+#canvas {
+  border: 1px solid #bbb;
+}
